@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Setup initial config if doesn't exist yet
+test -e $SNAP_DATA/daemon_arguments || cp $SNAP/etc/ceph_exporter/daemon_arguments.example $SNAP_DATA/daemon_arguments
+
+. $SNAP_DATA/daemon_arguments
+$SNAP/bin/ceph_exporter $ARGS
