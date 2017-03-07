@@ -1,5 +1,5 @@
 # Set the command-line arguments to pass to the ceph_exporter daemon
-ARGS="-ceph.user exporter"
+ARGS=""
 
 # Example of the commands:
 #  -ceph.config string

@@ -4,4 +4,5 @@
 test -e $SNAP_DATA/daemon_arguments || cp $SNAP/etc/ceph_exporter/daemon_arguments.example $SNAP_DATA/daemon_arguments
 
 . $SNAP_DATA/daemon_arguments
-$SNAP/bin/ceph_exporter $ARGS
+echo "* Running $SNAP/bin/ceph_exporter with args: $ARGS"
+$SNAP/bin/ceph_exporter -ceph.config /var/snap/prometheus-ceph-exporter/current/ceph.conf -ceph.user exporter $ARGS
