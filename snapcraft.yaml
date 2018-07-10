@@ -1,5 +1,5 @@
 name: prometheus-ceph-exporter
-version: 0.5.0
+version: 2.0.0
 summary: Prometheus Ceph Exporter
 description: |
   Exporter that exposes information gathered from Ceph for use by the Prometheus monitoring system
@@ -9,7 +9,7 @@ parts:
     plugin: go
     source: https://github.com/digitalocean/ceph_exporter.git
     go-importpath: github.com/digitalocean/ceph_exporter
-    source-tag: 1.0.0
+    source-tag: 2.0.0
     build-packages:
       - librados-dev
       - libnss3
@@ -22,9 +22,16 @@ parts:
     organize:
       daemon_arguments: etc/ceph_exporter/daemon_arguments.example
       ceph_exporter_wrapper: bin/ceph_exporter.wrapper
+    stage-packages:
+      - librados2
+      - libgtk3-nocsd0
+      - libnss3
+      - libstdc++6
     prime:
       - etc/ceph_exporter/daemon_arguments.example
       - bin/ceph_exporter.wrapper
+      - lib/*
+      - usr/lib/*
 apps:
   ceph-exporter:
     command: 'bin/ceph_exporter.wrapper'

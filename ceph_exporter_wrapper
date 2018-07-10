@@ -5,4 +5,5 @@ test -e $SNAP_DATA/daemon_arguments || cp $SNAP/etc/ceph_exporter/daemon_argumen
 
 . $SNAP_DATA/daemon_arguments
 echo "* Running $SNAP/bin/ceph_exporter with args: $ARGS"
+export LD_LIBRARY_PATH=$SNAP/lib/x86_64-linux-gnu:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib/x86_64-linux-gnu/ceph
 $SNAP/bin/ceph_exporter -ceph.config /var/snap/prometheus-ceph-exporter/current/ceph.conf -ceph.user exporter $ARGS
