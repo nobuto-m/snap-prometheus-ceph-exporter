@@ -1,5 +1,5 @@
 name: prometheus-ceph-exporter
-version: 3.0.0-nautilus
+version: nautilus-edge
 base: core18 #GLIBC_2.25 is necessary
 summary: Prometheus Ceph Exporter
 description: |
@@ -10,7 +10,7 @@ parts:
     plugin: go
     source: https://github.com/digitalocean/ceph_exporter.git
     go-importpath: github.com/digitalocean/ceph_exporter
-    source-tag: 3.0.0-nautilus
+    source-branch: nautilus
     build-packages:
       - librados-dev
       - libnss3
