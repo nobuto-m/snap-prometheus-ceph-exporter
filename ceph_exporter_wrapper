@@ -1,9 +1,50 @@
 #!/bin/sh
 
-# Setup initial config if doesn't exist yet
-test -e $SNAP_DATA/daemon_arguments || cp $SNAP/etc/ceph_exporter/daemon_arguments.example $SNAP_DATA/daemon_arguments
-
-. $SNAP_DATA/daemon_arguments
-echo "* Running $SNAP/bin/ceph_exporter with args: $ARGS"
 export LD_LIBRARY_PATH=$SNAP/lib/x86_64-linux-gnu:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib/x86_64-linux-gnu/ceph
-$SNAP/bin/ceph_exporter -ceph.config /var/snap/prometheus-ceph-exporter/current/ceph.conf -ceph.user exporter $ARGS
+
+snap_exporter_config=/var/snap/prometheus-ceph-exporter/current/exporter.yml
+snap_ceph_config=/var/snap/prometheus-ceph-exporter/current/ceph.conf
+
+if [ -e "$snap_exporter_config" ]; then
+    # use exporter.yml when available
+    export EXPORTER_CONFIG="$snap_exporter_config"
+    echo "* Running $SNAP/bin/ceph_exporter with env: EXPORTER_CONFIG=${EXPORTER_CONFIG}"
+else
+    # try to keep the backward compatibility with daemon_arguments
+    export CEPH_CONFIG="$snap_ceph_config"
+    export CEPH_USER='exporter'
+
+    # Setup initial config if doesn't exist yet
+    test -e $SNAP_DATA/daemon_arguments || cp $SNAP/etc/ceph_exporter/daemon_arguments.example $SNAP_DATA/daemon_arguments
+    . $SNAP_DATA/daemon_arguments
+
+    eval set -- "$(getopt -a -o '' -l ceph.config:,ceph.user:,telemetry.addr:,telemetry.path: -- $ARGS)"
+    while :; do
+        case $1 in
+            --ceph.config)
+                export CEPH_CONFIG=$2
+                shift 2
+                ;;
+            --ceph.user)
+                export CEPH_USER=$2
+                shift 2
+                ;;
+            --telemetry.addr)
+                export TELEMETRY_ADDR=$2
+                shift 2
+                ;;
+            --telemetry.path)
+                export TELEMETRY_PATH=$2
+                shift 2
+                ;;
+            --)
+                shift
+                break
+                ;;
+        esac
+    done
+
+    echo "* Running $SNAP/bin/ceph_exporter with env: CEPH_CONFIG=${CEPH_CONFIG}, CEPH_USER=${CEPH_USER}"
+fi
+
+$SNAP/bin/ceph_exporter
