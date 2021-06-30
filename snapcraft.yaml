@@ -5,6 +5,12 @@ summary: Prometheus Ceph Exporter
 description: |
   Exporter that exposes information gathered from Ceph for use by the Prometheus monitoring system
 confinement: strict
+package-repositories:
+  - type: apt
+    components: [main]
+    suites: [bionic-updates/ussuri]
+    key-id: 391A9AA2147192839E9DB0315EDB1B62EC4926EA
+    url: http://ubuntu-cloud.archive.canonical.com/ubuntu
 parts:
   ceph-exporter:
     plugin: go
