@@ -1,6 +1,6 @@
 name: prometheus-ceph-exporter
 version: nautilus-edge
-base: core18 #GLIBC_2.25 is necessary
+base: core20
 summary: Prometheus Ceph Exporter
 description: |
   Exporter that exposes information gathered from Ceph for use by the Prometheus monitoring system
@@ -9,7 +9,6 @@ parts:
   ceph-exporter:
     plugin: go
     source: https://github.com/digitalocean/ceph_exporter.git
-    go-importpath: github.com/digitalocean/ceph_exporter
     source-branch: nautilus
     build-packages:
       - librados-dev
