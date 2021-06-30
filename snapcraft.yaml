@@ -8,6 +8,7 @@ confinement: strict
 parts:
   ceph-exporter:
     plugin: go
+    go-channel: 1.13/stable
     source: https://github.com/digitalocean/ceph_exporter.git
     go-importpath: github.com/digitalocean/ceph_exporter
     source-tag: 3.0.0-nautilus
